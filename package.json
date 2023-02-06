@@ -1,0 +1,24 @@
+{
+  "name": "projetss6-proc-12820",
+  "version": "1.0.0",
+  "description": "- [Sujet du projet](https://www.labri.fr/perso/renault/working/teaching/projets/2020-21-S6-Scheme-Procedural.php)",
+  "main": "dist/index.html",
+  "dependencies": {
+    "canvas": "^2.7.0",
+    "parcel": "^2.0.0-beta.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.26.0",
+    "eslint-config-google": "^0.14.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://tmichel003@thor.enseirb-matmeca.fr/git/projetss6-proc-12820"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
