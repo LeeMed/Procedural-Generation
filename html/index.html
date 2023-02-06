@@ -1,0 +1,119 @@
+<html>
+<head>
+  <meta charset ="utf8"/>
+  <style>
+  #mycanvas{border:2px solid white;}
+  </style>
+</head>
+<body >
+
+  <h1  {text-align: center;} > Génération Procédurale </h1>
+  <div id="main" style="border: 1px solid black"/></div>
+  <b  id="s" > Tilings </b>
+  <br>
+  <br>
+  <label for="favcolor">Select your first color  :</label>
+  <input type="color" id="favcolor" name="favcolor" value="#bab1b1">
+  <br>
+  <label for="favcolor1">Select your second color :</label>
+  <input type="color" id="favcolor1" name="favcolor1" value="#bab1b1">
+  <br>
+  <label for="favcolor2">Select your third color if you are trying hex tiling or semi regular tiling  :</label>
+  <input type="color" id="favcolor2" name="favcolor2" value="#bab1b1">
+  <br>
+  <label for="favcolor3">Select your fourth color if you are trying semi regular tiling :</label>
+  <input type="color" id="favcolor3" name="favcolor3" value="#bab1b1">
+  <br>
+  <button id="square" type="button" > Square Tiling</button>
+  <label for "nbr">size:</label>
+  <input type="number" id="nbr" name="nbr">
+  <br><br>
+  <button id="triangle" type="button" > Triangle Tiling</button>
+  <label for "size_t">size:</label>
+  <input type="number" id="size_t" name="size_t">
+  <br><br>
+  <button id="hex" type="button" > Hexagone Tiling</button>
+  <label for "size_hex">size:</label>
+  <input type="number" id="size_hex" name="size_hex">
+  <button id="all" type="button" > Free Tiling</button>
+  <!-- <label for "size_hex">size:</label>
+  <input type="number" id="size_hex" name="size_hex"> -->
+  <br><br>
+  <!-- <label for "nbr">size:</label>
+  <input type="number" id="nbr" name="nbr"> -->
+  <!-- <button id="voronoi" type="button" > Voronoi </button>
+  <label for "nbr_vor">number of points:</label>
+  <input type="number" id="nbr_vor" name="nbr_vor">
+  <br><br>
+  <button id="white_noise" type="button" > White Noise </button>
+  <br><br>
+  <button id="STAR" type="button" > A STAR </button>
+  <br> -->
+
+  <!-- <button onclick = "walo"> Hexagonal tiling</button>
+  <button onclick = "myfunction()"> Triangular tiling</button> -->
+  <canvas id="squarecanvas"></canvas>
+  <canvas id="trianglecanvas"></canvas>
+  <canvas id="hexcanvas"></canvas>
+  <canvas id="freecanvas"></canvas>
+  <canvas id="whitenoisecanvas"></canvas>
+  <canvas id="mysecondcanvas"></canvas>
+  <canvas id="cellularnoisecanvas"></canvas>
+
+  <div class="slidecontainer">
+  <input type="range" min="1" max="100" value="50" class="slider" id="start">
+  <label for "nbr_vor">Starting position X</label>
+</div>
+<div class="slidecontainer">
+  <input type="range" min="1" max="100" value="50" class="slider" id="end">
+  <label for "nbr_vor">Starting position Y</label>
+</div>
+<div class="slidecontainer">
+  <input type="range" min="1" max="100" value="50" class="slider" id="xjump">
+  <label for "nbr_vor">Jump X</label>
+</div>
+<div class="slidecontainer">
+  <input type="range" min="1" max="100" value="50" class="slider" id="yjump">
+  <label for "nbr_vor">Jump Y</label>
+</div>
+<div class="slidecontainer">
+  <input type="range" min="1" max="20" value="4" class="slider" id="number_of_sides">
+  <label for "nbr_vor">Number of sides</label>
+</div>
+<div class="slidecontainer">
+  <input type="range" min="1" max="180" value="50" class="slider" id="rot">
+  <label for "nbr_vor">Rotation</label>
+</div>
+
+<div class="slidecontainer">
+<input type="range" min="1" max="100" value="50" class="slider" id="start1">
+<label for "nbr_vor">Starting position X</label>
+</div>
+<div class="slidecontainer">
+<input type="range" min="1" max="100" value="50" class="slider" id="end1">
+<label for "nbr_vor">Starting position Y</label>
+</div>
+<div class="slidecontainer">
+<input type="range" min="1" max="100" value="50" class="slider" id="xjump1">
+<label for "nbr_vor">Jump X</label>
+</div>
+<div class="slidecontainer">
+<input type="range" min="1" max="100" value="50" class="slider" id="yjump1">
+<label for "nbr_vor">Jump Y</label>
+</div>
+<div class="slidecontainer">
+<input type="range" min="1" max="20" value="4" class="slider" id="number_of_sides1">
+<label for "nbr_vor">Number of sides</label>
+</div>
+<div class="slidecontainer">
+<input type="range" min="1" max="180" value="50" class="slider" id="rot1">
+<label for "nbr_vor">Rotation</label>
+</div>
+  <!-- <b  id="add" > you can add them </b> -->
+  <!-- <button id="add_me" type="button" > Add us please </button> -->
+
+  <!-- <canvas id = "mycanvas" width = "300" height = "300"></canvas> -->
+
+  <script type="text/javascript" src="../src/index.js"></script>
+</body>
+</html>

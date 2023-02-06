@@ -1,0 +1,234 @@
+const RF = require("./RegularFunc");
+
+
+const fs = require('fs');
+
+
+
+/////////image to test teh different filter////////////////
+
+function max(a,b){
+    if(a>b)
+        return a;
+    return b;
+}
+function testWhiteBlackGreyHor(x,y,color1,color2,regWidth,canvas,image){
+    if( x<=regWidth){
+        RF.fillPixel(x,y,color1,image);
+    }
+    else if(x <=2*regWidth){
+        const col = [max((color1[0]-color2[0])/2,(color2[0]-color1[0])/2),max((color1[1]-color2[1])/2,(color2[1]-color1[1])/2),max((color1[2]-color2[2])/2,(color2[2]-color1[2])/2)];
+        RF.fillPixel(x,y,col,image);
+    }
+    else {
+        RF.fillPixel(x,y,color2,image);
+    }
+}
+function testWhiteBlackGreyVer(x,y,color1,color2,regWidth,canvas,image){
+
+    if( y<=regWidth){
+        RF.fillPixel(x,y,color1,image);
+        }
+    else if(y <=2*regWidth){
+        const col = [max((color1[0]-color2[0])/2,(color2[0]-color1[0])/2),max((color1[1]-color2[1])/2,(color2[1]-color1[1])/2),max((color1[2]-color2[2])/2,(color2[2]-color1[2])/2)];
+        RF.fillPixel(x,y,col,image);
+        }
+    else {
+        RF.fillPixel(x,y,color2,image);
+        }
+}
+
+
+
+/////////base operation //////////
+function operation(imgSrc,imgDest,f){
+
+
+    for (let y = 0; y < imgDest.height; y++) {
+
+        for (let x = 0; x < imgDest.width; x++) {
+
+            imgDest= f(x,y,imgSrc,imgDest);
+
+        }
+    }
+    return imgDest;
+}
+function product(x,y,imgSrc,imgDest){
+    let n = 4*x+4*y*imgDest.width;
+    imgDest.data[n]   =    255*( (imgSrc.data[n]/255) * (imgDest.data[n]/255));
+    imgDest.data[n+1]   =    255*( (imgSrc.data[n+1]/255) * (imgDest.data[n+1]/255));
+    imgDest.data[n+2]   =    255*( (imgSrc.data[n+2]/255 )* (imgDest.data[n+2]/255));
+    imgDest.data[n+3]   =  255;            //we must check about this one
+    return imgDest;
+
+}
+
+function screen(x,y,imgSrc,imgDest){
+    let n = 4*x+4*y*imgDest.width;
+    imgDest.data[n]   =    255*( 1-(1-imgSrc.data[n]/255) * (1-imgDest.data[n]/255));
+    imgDest.data[n+1]   =    255*(1- (1-imgSrc.data[n+1]/255) * (1-imgDest.data[n+1]/255));
+    imgDest.data[n+2]   =    255*(1- (1-imgSrc.data[n+2]/255 )* (1-imgDest.data[n+2]/255));
+    imgDest.data[n+3]   =  255;            //we must check about this one
+    return imgDest;
+
+}
+
+
+function printOperation(imgStrucSrc,imgStrucDest,fileName,f){
+    const fs = require('fs');
+    let [image,canvas,context] = RF.initCanvas(300,300);//width and height
+    let imageStructure1 = {img:image,h:canvas.height,w:canvas.width};
+    imageStructure1.img =operation(imgStrucSrc,imgStrucDest,f);
+
+    RF.show(imageStructure1,canvas,context,fs,fileName);
+}
+
+//////////////// convolution///////////
+
+
+function convolution(filter,image){
+
+
+    return [image.reduce((accumulator,currentValue,index)=>accumulator
+        + currentValue[0]*filter[index],0),image.reduce((accumulator,currentValue,index)=>accumulator
+        + currentValue[1]*filter[index],0),image.reduce((accumulator,currentValue,index)=>accumulator
+        + currentValue[2]*filter[index],0)];
+}
+
+//size must not be nod
+let thisimage=[10, 20, 30];
+let contour2 = [1,0,-1,0,0,0,-1,0,1];
+thisimage.reduce((acc, x, i) => {acc += x; console.log(acc, contour2[i] * x, i); return acc;}, 0);
+
+function getimagepart(x,y,image,size){
+let pos = RF.position(x,y,image.height,image.width);
+let part = [];
+//console.log("pos");
+//console.log(pos);
+//console.log(x);
+
+let totalwidth=image.width;
+let startpos = 4*x+y*totalwidth*4 -((size -1)/2)*4 - ((size -1)/2)*y*totalwidth*4;
+//console.log(((size +1)/2)*4);
+if (pos===4){
+    for(let i = 0; i<size;i++){
+       for(let j = 0; j<size;j++){
+           //faut que ce soit les valeurs des pixels
+            part[i+j*size]= [image.data[startpos+i*4+j*totalwidth*4],image.data[startpos+i*4+j*totalwidth*4+1],image.data[startpos+i*4+j*totalwidth*4+2]];
+           }
+        }
+        return part;
+}
+else {
+    for (let i = 0; i<size;i++){
+        for(let j = 0; j<size;j++){
+
+            part[i+j*size]= [image.data[4*x+y*totalwidth*4],image.data[4*x+y*totalwidth*4+1],image.data[4*x+y*totalwidth*4+2]];
+            }
+        }
+        return part;
+    }
+}
+
+
+
+function matrixFilter(x,y,image,contour,size){
+    const n = 4*x+4*y*image.width;
+    let neighbour = getimagepart(x,y,image,size);
+    //console.log(neighbour);
+    let convolution1 = convolution(contour,neighbour);
+    //console.log("convolution");
+    //console.log(convolution1);
+    image.data[n]   = convolution1[0];
+    image.data[n+1] = convolution1[1];
+    image.data[n+2] = convolution1[2];
+}
+//applique un filtre et modifie la fonction par effet de bord
+function applyFilter(imageStructure,f,contour,size){
+
+  for (let y = 0; y < imageStructure.h; y++) {
+    for (let x = 0; x < imageStructure.h; x+=1) {
+      //
+      f(x,y,imageStructure.img,contour,size);
+    }
+
+  }
+}
+
+/////trnasfo d'image pour test//////////////
+// Converts image to canvas; returns new canvas element
+function convertImageToCanvas(image) {
+	let canvas = document.createElement("canvas");
+	canvas.width = image.width;
+	canvas.height = image.height;
+	canvas.getContext("2d").drawImage(image, 0, 0);
+
+	return canvas;
+}
+
+////// les affichages //////////
+
+
+let [image1,canvas,context] = RF.initCanvas(300,300);//width and height
+let imageStructure1 = {img:image1,h:canvas.height,w:canvas.width};
+console.log(("canvas intialised"));
+RF.applyImg([0,0,0],[255,255,255],30,canvas,imageStructure1,testWhiteBlackGreyHor);
+RF.show(imageStructure1,canvas,context,fs,"whitheBlackH");
+
+
+
+let [image2,canvas2,context2] = RF.initCanvas(300,300);//width and height
+let imageStructure2 = {img:image2,h:canvas2.height,w:canvas2.width};
+RF.applyImg([0,0,0],[255,255,255],30,canvas2,imageStructure2,testWhiteBlackGreyVer);
+RF.show(imageStructure2,canvas2,context2,fs,"whitheBlackV");
+
+printOperation(imageStructure1.img,imageStructure2.img,"firstProduct",product);
+printOperation(imageStructure1.img,imageStructure2.img,"firstScreen",screen);
+
+const contourDetection1 = [1,0,-1,0,0,0,-1,0,1];
+const contourDetection2 = [0,1,0,1,-4,1,0,1,0];
+const contourDetection3 = [-1,-1,-1,-1,8,-1,-1,-1,-1] ;
+const clarity = [0,1,0,1,-5,1,0,1,0];
+const boxBlur = [1/9,1/9,1/9,1/9,1/9,1/9,1/9,1/9,1/9];
+const gaussBlury3 =[1/16,2/16,1/16,2/16,4/16,2/16,1/16,2/16,1/16];
+const gaussBlury5 =[1/256,2/256,4/256,2/256,1/256,4/256,16/256,24/256,16/256,4/256,6/256,24/256,36/256,24/256,6/256,4/256,16/256,24/256,16/256,4/256,1/256,4/256,6/256,4/256,1/256];
+const maskBlury =[-1/256,-4/256,-6/256,-4/256,-1/256,-4/256,-16/256,-24/256,-16/256,-4/256,-6/256,-24/256,476/256,-24/256,-6/256,-4/256,-16/256,-24/256,-16/256,-4/256,-1/256,-4/256,-6/256,-4/256,-1/256];
+//wotking on contour detection
+let [image3,canvas3,context3] = RF.initCanvas(300,300);//width and height
+let imageStructure3 = {img:image3,h:canvas3.height,w:canvas3.width};
+console.log(("canvas intialised"));
+RF.applyImg([0,0,0],[255,255,255],30,canvas3,imageStructure3,testWhiteBlackGreyHor);
+RF.show(imageStructure3,canvas3,context3,fs,"imgtofilter");
+applyFilter(imageStructure3,matrixFilter,contourDetection1,3);
+console.log("filter");
+RF.show(imageStructure3,canvas3,context3,fs,"convol1");
+
+//wotking on contour detection
+let [image4,canvas4,context4] = RF.initCanvas(300,300);//width and height
+let imageStructure4 = {img:image4,h:canvas4.height,w:canvas4.width};
+console.log(("canvas intialised"));
+RF.applyImg([0,0,0],[255,255,255],30,canvas4,imageStructure4,testWhiteBlackGreyHor);
+RF.show(imageStructure4,canvas4,context4,fs,"imgtofilter2");
+applyFilter(imageStructure4,matrixFilter,clarity,3);
+console.log("filter");
+RF.show(imageStructure4,canvas4,context4,fs,"clarity");
+
+
+//wotking on contour detection
+let [image5,canvas5,context5] = RF.initCanvas(300,300);//width and height
+let imageStructure5 = {img:image5,h:canvas5.height,w:canvas5.width};
+console.log(("canvas intialised"));
+RF.applyImg([0,0,0],[255,255,255],30,canvas5,imageStructure5,testWhiteBlackGreyHor);
+RF.show(imageStructure5,canvas5,context5,fs,"imgtofilter3");
+applyFilter(imageStructure5,matrixFilter,gaussBlury5,5);
+console.log("filter");
+RF.show(imageStructure5,canvas5,context5,fs,"gaussBlury5");
+
+
+
+exports.printOperation = printOperation
+exports.product = product
+exports.screen = screen
+exports.applyFilter = applyFilter
+exports.matrixFilter = matrixFilter

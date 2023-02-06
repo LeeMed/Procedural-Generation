@@ -1,0 +1,23 @@
+\babel@toc {french}{}
+\contentsline {section}{\numberline {1}Introduction}{3}%
+\contentsline {subsection}{\numberline {1.1}Problématique}{3}%
+\contentsline {subsection}{\numberline {1.2}Adaptation des concepts de programmation fonctionnelle aux images}{3}%
+\contentsline {subsection}{\numberline {1.3}Outils de travail}{3}%
+\contentsline {subsection}{\numberline {1.4}Les générateurs}{3}%
+\contentsline {section}{\numberline {2}Manipulation d'images en programmation fonctionnelle}{3}%
+\contentsline {section}{\numberline {3}Textures basées sur les calculs de distance}{4}%
+\contentsline {subsection}{\numberline {3.1}Diagrammes de Voronoi}{4}%
+\contentsline {subsubsection}{\numberline {3.1.1}Voronoi Normale}{4}%
+\contentsline {subsubsection}{\numberline {3.1.2}Black Voronoi}{5}%
+\contentsline {section}{\numberline {4}Textures basées sur la génération de bruit spatial}{5}%
+\contentsline {subsection}{\numberline {4.1} Bruit de Perlin}{5}%
+\contentsline {subsection}{\numberline {4.2} Bruit de Worley }{6}%
+\contentsline {section}{\numberline {5} Les textures basées sur les pavages}{7}%
+\contentsline {subsection}{\numberline {5.1}Interface Web}{7}%
+\contentsline {section}{\numberline {6}Améliorations envisageables}{7}%
+\contentsline {subsection}{\numberline {6.1}Solutions algorithmiques moins complexes}{7}%
+\contentsline {section}{\numberline {7}Filtres réalisé}{7}%
+\contentsline {subsection}{\numberline {7.1}filtres réalisant la composition de deux images}{7}%
+\contentsline {subsection}{\numberline {7.2}Produit de convolution}{8}%
+\contentsline {section}{\numberline {8}Conclusion}{8}%
+\contentsline {section}{\numberline {9}Références}{9}%

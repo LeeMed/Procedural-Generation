@@ -1,0 +1,180 @@
+// const c = require("./colors.js");
+const L = require("./htmlFunctions.js");
+const M = require("./main.js")
+const polyFactory = PF.polyFactory;
+const applyImgBis = RF.applyImgBis;
+
+
+
+
+const [image,canvas,context] = L.initCanvasHtml(300,300);
+
+f // const c = require("./colors.js");
+// const l = require("./stack.js");
+
+
+document.getElementById("square").onclick = get_square;
+document.getElementById("triangle").onclick = get_triangle;
+document.getElementById("hex").onclick = get_hex;
+// document.getElementById("white_noise").onclick = get_white_noise;
+// document.getElementById("voronoi").onclick = get_voronoi;
+document.getElementById("cellular").onclick = get_cellule;
+
+function make(hex){
+   let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+
+    let R= parseInt(result[1], 16);
+    let G= parseInt(result[2], 16);
+    let B= parseInt(result[3], 16);
+		return [R,G,B,255];
+	}
+// document.getElementById("square").innerHTML = "hghjk";
+// let image_bruit;
+// let image_carré;
+// import * as c from './colors';
+// import * as l from './stack';
+
+// function get_white_noise()
+// {
+// 	const width = 200, height = 200;
+// 	let canvas = document.getElementById('whitenoisecanvas');
+// 	canvas.width = width; canvas.height = height;
+// 	let context = canvas.getContext("2d");
+// 	let image = context.createImageData(width, height);
+// 	let T= W.white_noise(height,width,canvas);
+// 	context.putImageData(T[0], 0, 0);
+//
+//
+// }
+function get_cellule()
+{
+	const width = 200, height = 200;
+	let canvas = document.getElementById('cellularnoisecanvas');
+	canvas.width = width; canvas.height = height;
+	let context = canvas.getContext("2d");
+	let image = context.createImageData(width, height);
+	let T= C.cellular_noise(height,width,C.Euclidean_distance,canvas);
+	context.putImageData(T[0], 0, 0);
+
+
+}
+// function get_voronoi()
+// {
+// 	// let x= 30;
+// 	let x = parseInt(document.getElementById("nbr_vor").value);
+// 	// let y=parseInt(JSON.parse(JSON.stringify(x)));
+// 	const width = 200, height = 200;
+// 	let canvas = document.getElementById('mysecondcanvas');
+// 	canvas.width = width; canvas.height = height;
+// 	let context = canvas.getContext("2d");
+// 	let image = context.createImageData(width, height);
+// 	let A=V.voronoi_diagram(height,width,x,V.Euclidean_distance,canvas);
+// 	// image_bruit=A[0];
+// 	context.putImageData(A[0], 0, 0);
+//
+// }
+function get_square()
+{
+
+	let size = parseInt(document.getElementById("nbr").value);
+	let hex=document.getElementById("favcolor").value;
+	let hex1=document.getElementById("favcolor1").value;
+	let color=make(hex);
+	let color1=make(hex1);
+
+	const width = 200, height = 200;
+	let canvas = document.getElementById('mycanvas');
+	canvas.width = width; canvas.height = height;
+	let context = canvas.getContext("2d");
+	let image = context.createImageData(width, height);
+	let image_structure={image:image, height:height, width:width};
+	// item1=prompt("hi");
+	// console.log("fghjkl");
+	let cs1=RT.ConditionForSquareTiling1(4,size,image_structure);
+	let cs2=RT.ConditionForSquareTiling2(4,size,image_structure);
+	console.log("fghj");
+	image=RT.applyImage(image_structure,[color,color1],cs1,cs2);
+	// image_carré=image;
+	context.putImageData(image, 0, 0);
+
+}
+
+function get_triangle()
+{
+	let size = parseInt(document.getElementById("size_t").value);
+	let hex=document.getElementById("favcolor").value;
+	let hex1=document.getElementById("favcolor1").value;
+	let color=make(hex);
+	let color1=make(hex1);
+
+	const width = 200, height = 200;
+	let canvas = document.getElementById('trianglecanvas');
+	canvas.width = width; canvas.height = height;
+	let context = canvas.getContext("2d");
+	let image = context.createImageData(width, height);
+	let image_structure={image:image, height:height, width:width};
+	let cr1 = RT.ConditionForTriangleTiling1(3,size,image_structure);
+	let cr2 = RT.ConditionForTriangleTiling2(3,size,image_structure);
+	image=RT.applyImage(image_structure,[color,color1],cr1,cr2);
+	context.putImageData(image,0,0);
+
+}
+function get_hex()
+{
+	let size_hex = parseInt(document.getElementById("size_hex").value);
+	let hex=document.getElementById("favcolor").value;
+	let hex1=document.getElementById("favcolor1").value;
+	let hex2=document.getElementById("favcolor2").value;
+	let color=make(hex);
+	let color1=make(hex1);
+	let color2=make(hex2);
+
+	const width = 200, height = 200;
+	let canvas = document.getElementById('hexcanvas');
+	canvas.width = width; canvas.height = height;
+	let context = canvas.getContext("2d");
+	let image = context.createImageData(width, height);
+
+	let image_structure={image:image, height:height, width:width};
+
+	let ch1=RT.ConditionForHexTiling1(6,size_hex,image_structure);
+	let ch2=RT.ConditionForHexTiling2(6,size_hex,image_structure);
+	let ch3=RT.ConditionForHexTiling3(6,size_hex,image_structure);
+	image= RT.applyImage(image_structure,[color,color1,color2],ch1,ch2,ch3);
+	context.putImageData(image,0,0);
+}
+// function get_add()
+// {
+// 	const width = 200, height = 200;
+// 	let canvas = document.getElementById('add_canvas');
+//
+// 	canvas.width = width; canvas.height = height;
+// 	let context = canvas.getContext("2d");
+//
+// 	let T=F.add_filter(image_bruit,image_carré,canvas);
+// 	context.putImageData(T[0], 0, 0);
+//
+// }
+// image= RT.applyImage(image_structure,[[255,0,0,255],[0,0,0,255]],cs1,cs2);
+// let n = 0; // Index inside the image array
+// for (let y = 0; y < canvas.height; y++) {
+//     for (let x = 0; x < canvas.width; x++, n += 4) {
+//         image.data[n]   = 0;
+//         image.data[n+1] = 0;
+//         image.data[n+2] = 255;
+//         image.data[n+3] = 255;
+//     }
+// }
+console.log("hello");
+
+// const main_div = document.getElementById("main");
+
+// const list_of_colors = l.cons(c.getRandomColor(),
+// l.cons(c.getRandomColor(),
+// l.cons(c.getRandomColor(),
+// l.empty_list())));
+
+
+// l.list_foreach((el) => {
+//     main_div.innerText += (" " + el.name);
+// }, list_of_colors);

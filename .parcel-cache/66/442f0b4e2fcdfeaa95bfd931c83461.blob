@@ -1,0 +1,11 @@
+function initCanvasHtml(width,height){
+
+  let canvas = document.getElementById('myCanvas');
+  canvas.width = width; canvas.height = height;
+  let context = canvas.getContext("2d");
+  let image = context.createImageData(width, height);
+  return [image,canvas,context];
+}
+
+
+exports.initCanvasHtml = initCanvasHtml;

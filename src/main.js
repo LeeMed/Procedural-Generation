@@ -1,0 +1,85 @@
+const RF = require('./RegularFunc');
+const PF = require('./polygoneFunctions');
+const FL = require('./filter.js');
+const ST = require('./special_tilings.js');
+// const polyFactory = PF.polyFactory;
+const applyImgBis = RF.applyImgBis;
+const fs = require('fs');
+
+
+
+
+
+//EXEMPLES OF UTILISATION UNCOMMENTE
+
+
+// Matrices to use for convolution
+// const contourDetection1 = [1,0,-1,0,0,0,-1,0,1];
+// const contourDetection2 = [0,1,0,1,-4,1,0,1,0];
+// const contourDetection3 = [-1,-1,-1,-1,8,-1,-1,-1,-1] ;
+const clarity = [0,1,0,1,-5,1,0,1,0];
+// const boxBlur = [1/9,1/9,1/9,1/9,1/9,1/9,1/9,1/9,1/9];
+// const gaussBlury3 =[1/16,2/16,1/16,2/16,4/16,2/16,1/16,2/16,1/16];
+// const gaussBlury5 =[1/256,2/256,4/256,2/256,1/256,4/256,16/256,24/256,16/256,4/256,6/256,24/256,36/256,24/256,6/256,4/256,16/256,24/256,16/256,4/256,1/256,4/256,6/256,4/256,1/256];
+// const maskBlury =[-1/256,-4/256,-6/256,-4/256,-1/256,-4/256,-16/256,-24/256,-16/256,-4/256,-6/256,-24/256,476/256,-24/256,-6/256,-4/256,-16/256,-24/256,-16/256,-4/256,-1/256,-4/256,-6/256,-4/256,-1/256];
+console.log(PF);
+console.log(ST);
+const [image, canvas, context] = RF.initCanvas(300, 300);//width and height
+const imageStructure = {img:image, h:canvas.height, w:canvas.width};
+console.log(("canvas intialised"));
+
+// To create a second image in order to combine them later
+const [image2,canvas2,] = RF.initCanvas(300,300);//width and height
+const imageStructure2 = {img:image2,h:canvas2.height,w:canvas2.width};
+// This how you build a polygone
+// let square = polyFactory(4,25);
+// let triangle = polyFactory(3,25);
+// let hexagone = polyFactory(6,25);
+// let octagone = polyFactory(8,25);
+
+//const colorArray = [[20,200,155,255],[200,0,10,255]];
+const colorArray2 = [[0,200,100,255],[200,150,20,255],[100,20,200,255]];
+//const colorArray3 = [[0,255,0,255], [200,255,10,255], [0,0,255,255], [255,10,255,255]];//que les deuxième sont appliqués
+
+const h = imageStructure.h;
+const w = imageStructure.w;
+// let colorArray = [[200,200,0,255]];
+// applyImgBis(imageStructure,colorArray,PF.triangleTilingCondition1(3,20,h,w),PF.triangleTilingCondition2(3,20,h,w));//triangle
+// applyImgBis(imageStructure,colorArray,PF.triangleTilingCondition1(3,15,h,w),PF.triangleTilingCondition2(3,15,h,w));//triangle//problème d'approx
+// applyImgBis(imageStructure,colorArray,PF.squareTilingCondition1(4,10,h,w),PF.squareTilingCondition2(4,10,h,w));// square
+// applyImgBis(imageStructure,colorArray,PF.squareTilingCondition1(5,20,h,w),PF.squareTilingCondition2(5,20,h,w));// square
+
+// applyImgBis(imageStructure,colorArray2,PF.hexagoneTilingCondition1(5,30,h,w),PF.hexagoneTilingCondition2(10,30,h,w),PF.hexagoneTilingCondition3(10,30,h,w));// hexagone
+// applyImgBis(imageStructure,colorArray2,PF.hexagoneTilingCondition1(6,10,h,w),PF.hexagoneTilingCondition2(6,10,h,w),PF.hexagoneTilingCondition3(6,10,h,w));// hexagone
+
+// applyImgBis(imageStructure,colorArray,PF.squareTilingCondition1(4,30,h,w),PF.squareTilingCondition2(4,20,h,w));// square
+// applyImgBis(imageStructure2,colorArray,PF.polygoneDrawingPattern(4,10,h,w,10,undefined,undefined,y_j=30,Math.PI/4),PF.polygoneDrawingPattern(4,10,h,w,undefined,undefined,undefined,y_j=60,Math.PI/4));//general drawing pattern
+
+
+//semi regular tiling
+// applyImgBis(imageStructure,colorArray,PF.triangleSemiTilingCondition1(3,30,h,w),PF.squareSemiTilingCondition1(4,30,h,w));
+// applyImgBis(imageStructure,colorArray3,PF.triangleSemiTilingCondition2(3,30,h,w),PF.triangleSemiTilingCondition1(3,30,h,w),PF.squareSemiTilingCondition1(6,30,h,w),PF.squareSemiTilingCondition2(6,30,h,w));
+// applyImgBis(imageStructure,colorArray3,PF.triangleSemiTilingCondition1(3,30,h,w),[(x,y)=>false],PF.squareSemiTilingCondition2(4,30,h,w),PF.squareSemiTilingCondition2(4,30,h,w));
+applyImgBis(imageStructure2,colorArray2,PF.squareTilingCondition1(4,30,h,w),PF.squareTilingCondition2(4,20,h,w));// square
+
+console.log(imageStructure);
+
+// Bruits
+
+// ST.Voronoi(600,600,400);
+// ST.Voronoiblack(400,400,100);
+// ST.Noise(400,400,[255,100,0,0],10,100);
+// ST.Noise1(400,400);
+// ST.Noise2(400,400);
+
+
+
+//fiters:
+RF.show(imageStructure,canvas,context,fs,"images/first_image");
+//RF.show(imageStructure2,canvas,context,fs,"Demo");
+
+//FL.printOperation(imageStructure.img, imageStructure2.img, "firstProduct",FL.product);//creat an image with name product
+// FL.printOperation(imageStructure.img, imageStructure2.img, "secondProduct", FL.screen);
+FL.applyFilter(imageStructure, FL.matrixFilter, clarity, 3);//3 est la taille de la matrice à appliquer
+// FL.applyFilter(imageStructure, FL.matrixFilter, contourDetection1, 3);
+// FL.applyFilter(imageStructure, FL.matrixFilter, gaussBlury5, 3);
